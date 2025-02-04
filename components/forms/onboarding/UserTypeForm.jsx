@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Building2, UserRound } from "lucide-react";
 
-export function UserTypeForm({onSelect}) {
+export function UserTypeForm({ onSelect }) {
   return (
     <div className="space-y-8">
       <div className="text-center space-y-2">
@@ -13,6 +13,7 @@ export function UserTypeForm({onSelect}) {
 
       <div className="grid gap-4">
         <Button
+          onClick={() => onSelect("company")}
           variant="outline"
           className="w-full h-auto p-6 items-center justify-start gap-4 border-2 transition-all duration-200 hover:border-primary hover:bg-primary/5"
         >
@@ -27,6 +28,7 @@ export function UserTypeForm({onSelect}) {
         </Button>
 
         <Button
+          onClick={() => onSelect("jobSeeker")}
           variant="outline"
           className="w-full h-auto p-6 items-center justify-start gap-4 border-2 transition-all duration-200 hover:border-primary hover:bg-primary/5"
         >

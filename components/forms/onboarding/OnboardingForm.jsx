@@ -5,6 +5,7 @@ import Logo from "@/public/logo.png";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
 import { UserTypeForm } from "./UserTypeForm";
+import { CompanyForm } from "./CompanyForm";
 
 export function OnboardingForm() {
   const [step, setStep] = useState(1);
@@ -18,12 +19,10 @@ export function OnboardingForm() {
   function renderStep() {
     switch (step) {
       case 1:
-        return <UserTypeForm />;
+        return <UserTypeForm onSelect={handleUserTypeSelection} />;
 
       case 2:
-        return userType === "company" ? (
-          <p>User is an company</p>
-        ) : (
+        return userType === "company" ? <CompanyForm /> : (
           <p>User is a job seeker</p>
         );
 
@@ -42,7 +41,7 @@ export function OnboardingForm() {
       </div>
 
       <Card className="max-w-lg w-full py-5">
-        <CardContent>{renderStep()}</CardContent>
+        <CardContent className="p-6">{renderStep()}</CardContent>
       </Card>
     </>
   );
