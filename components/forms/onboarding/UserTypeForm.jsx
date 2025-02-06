@@ -15,7 +15,7 @@ export function UserTypeForm({ onSelect }) {
         <Button
           onClick={() => onSelect("company")}
           variant="outline"
-          className="w-full h-auto p-6 items-center justify-start gap-4 border-2 transition-all duration-200 hover:border-primary hover:bg-primary/5"
+          className="w-full h-auto p-6 items-center justify-start gap-4 border-2 transition-all duration-200 hover:border-primary dark:hover:border-ring hover:bg-primary/5"
         >
           <div className="size-10 rounded-full bg-primary/10 flex items-center justify-center">
             <Building2 className="size-6 text-primary" />
@@ -30,7 +30,7 @@ export function UserTypeForm({ onSelect }) {
         <Button
           onClick={() => onSelect("jobSeeker")}
           variant="outline"
-          className="w-full h-auto p-6 items-center justify-start gap-4 border-2 transition-all duration-200 hover:border-primary hover:bg-primary/5"
+          className="w-full h-auto p-6 items-center justify-start gap-4 border-2 transition-all duration-200 hover:border-primary dark:hover:border-ring hover:bg-primary/5"
         >
           <div className="size-10 rounded-full bg-primary/10 flex items-center justify-center">
             <UserRound className="size-6 text-primary" />
