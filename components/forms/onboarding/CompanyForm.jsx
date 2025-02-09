@@ -1,3 +1,5 @@
+"use client"
+
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { companySchema } from "@/app/utils/zodSchemas"
@@ -7,14 +9,14 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectGroup, SelectLabel, SelectTrigger, SelectValue, SelectItem } from "@/components/ui/select"
 import { countryList } from "@/app/utils/countriesList"
 import { Textarea } from "@/components/ui/textarea"
-import { UploadDropzone } from "@/components/general/UploadThingReexported"
+import { UploadDropzone } from "@/components/general/UploadThingReExported"
 import { createCompany } from "@/app/action"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import { XIcon } from "lucide-react"
 
 export function CompanyForm() {
-
 
     const form = useForm({
         resolver: zodResolver(companySchema),
@@ -37,7 +39,6 @@ export function CompanyForm() {
         } catch (error) {
             if (error instanceof Error && error.message !== 'NEXT_REDIRECT') {
                 console.log("something went wrong");
-
             }
         } finally {
             setPending(false)
@@ -144,6 +145,7 @@ export function CompanyForm() {
                         </FormItem>
                     )}
                 />
+                {/* full width for logo uploader  */}
                 <FormField
                     control={form.control}
                     name="logo"
@@ -152,25 +154,32 @@ export function CompanyForm() {
                             <FormLabel>Company logo</FormLabel>
                             <FormControl>
                                 <div>
-                                    {field.value ? (
-                                        <div>
-                                          <Image 
-                                          
-                                          src={field.value} 
-                                          alt="company logo" 
-                                          width={100} 
-                                          height={100}
-                                          
-                                          />
+                                    {field.value && field.value !== '' ? (
 
+                                        <div className="relative w-fit">
+                                            <Image
+                                                src={field.value}
+                                                alt="Company logo"
+                                                width={100}
+                                                height={100}
+                                            />
+                                            <Button 
+                                            
+                                            className="absolute -top-2 -right-2" 
+                                            type="button" 
+                                            variant="destructive"
+                                            onClick={()=>field.onChange("")}
+                                            >
+                                                <XIcon className="size-4" />
+                                            </Button>
                                         </div>
                                     ) : (
-                                        <UploadDropzone placeholder="Tell us about your company..." {...field} endpoint="imageUploader"
+                                        <UploadDropzone endpoint="imageUploader"
                                             onClientUploadComplete={(res) => {
                                                 field.onChange(res[0].url)
                                             }}
-                                            onUploadError={() => {
-                                                console.log("something went wrong");
+                                            onUploadError={(e) => {
+                                                console.log("something went wrong", e);
                                             }}
                                             className="ut-button:bg-primary ut-button:text-white ut-button:hover:bg-primary/90 ut-label:text-muted-foreground ut-allowed-content:text-muted-foreground border-primary"
                                         />

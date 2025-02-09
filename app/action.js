@@ -9,6 +9,7 @@ import { redirect } from "next/navigation";
 export async function createCompany(data) {
     const session = await requireUser();
 
+ 
     const validateData = companySchema.parse(data)
 
     await prisma.user.update({

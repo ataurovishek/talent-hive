@@ -41,7 +41,7 @@ export async function LoginForm() {
                             action={
                                 async () => {
                                     "use server"
-                                    await signIn('github', { redirectTo: '/' })
+                                    await signIn('github', { redirectTo: '/onboarding' })
                                 }}>
                             <GeneralSubmitButton text='Login with Github' variant='outline' width='w-full border-black dark:border-gray-800' icon={<Github />} />
 
@@ -52,7 +52,7 @@ export async function LoginForm() {
 
                             action={async () => {
                                 'use server'
-                                await signIn('google', { redirectTo: '/' })
+                                await signIn('google', { redirectTo: '/onboarding' })
                             }}
                         >
                             <GeneralSubmitButton text='Login with Google' variant='outline' width='w-full border-black dark:border-gray-800' icon={<Google />} />
