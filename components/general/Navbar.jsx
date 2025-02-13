@@ -1,9 +1,10 @@
 import Image from "next/image"
 import Link from "next/link"
 import logo from "@/public/logo.png"
-import { Button, buttonVariants } from "../ui/button"
+import { buttonVariants } from "../ui/button"
 import { ThemeToggle } from "./ThemeToggle"
-import { auth, signOut } from "@/app/utils/auth"
+import { auth } from "@/app/utils/auth"
+import { UserDropdown } from "./userDropdown"
 export async function Navbar() {
 
     const session = await auth()
@@ -16,7 +17,7 @@ export async function Navbar() {
                     Talent<span className="text-primary">Hive</span>
                 </h1>
             </Link>
-            <div className="flex items-center gap-3">
+            {/* <div className="flex items-center gap-3">
                 <ThemeToggle />
 
                 {
@@ -31,6 +32,16 @@ export async function Navbar() {
                         ) :
 
                         (<Link className={buttonVariants({ variant: 'outline' })} href='/login'>Login</Link>)}
+            </div> */}
+
+            <div className="hidden md:flex items-center gap-5">
+                <ThemeToggle />
+                <Link href="/post-job" className={buttonVariants({ size: "lg" })}>Post Job </Link>
+                {session?.user ? (
+                    <UserDropdown email={session.user.email} image={session.user.image} username={session.user.name} />
+                ) : (
+                    <Link href='/login' className={buttonVariants({ variant: "outline" })}>Login</Link>
+                )}
             </div>
         </nav>
     )

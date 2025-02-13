@@ -16,7 +16,6 @@ import { createJobSeeker } from "@/app/action";
 
 export function JobSeekerForm() {
 
-
     const form = useForm({
         resolver: zodResolver(jobSeekerSchema),
         defaultValues: {
@@ -33,7 +32,7 @@ export function JobSeekerForm() {
             await createJobSeeker(data)
         } catch (error) {
             if (error instanceof Error && error.message !== 'NEXT_REDIRECT') {
-                console.log("Something went wrong", error);
+                console.log("SoFmething went wrong", error);
             }
         } finally {
             setPending(false)
