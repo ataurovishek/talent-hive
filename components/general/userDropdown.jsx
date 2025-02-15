@@ -6,7 +6,7 @@ import Link from "next/link";
 import { signOut } from "@/app/utils/auth";
 
 export function UserDropdown({ email, username, image }) {
-    console.log(image);
+ 
     
     return (
         <DropdownMenu>
