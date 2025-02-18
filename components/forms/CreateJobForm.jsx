@@ -11,6 +11,7 @@ import { countryList } from "@/app/utils/countriesList";
 import { SalaryRangeSelector } from "../general/SalaryRangeSelector";
 import { JobDescriptionEditor } from "../textEditor.jsx/jobDescEditor";
 import { BenefitsSelector } from "../general/BenefitsSelector";
+import { Textarea } from "../ui/textarea";
 
 
 export function CreateJobForm() {
@@ -139,11 +140,11 @@ export function CreateJobForm() {
 
                             control={form.control}
                             name="jobDescription"
-                            render={({field}) => (
+                            render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Job Description</FormLabel>
                                     <FormControl>
-                                        <JobDescriptionEditor field={field}/>
+                                        <JobDescriptionEditor field={field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -157,12 +158,113 @@ export function CreateJobForm() {
                                 <FormItem>
                                     <FormLabel>Benefits</FormLabel>
                                     <FormControl>
-                                        <BenefitsSelector field={field}/>
+                                        <BenefitsSelector field={field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
+                    </CardContent>
+                </Card>
+
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Company Information</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <FormField
+                                control={form.control}
+                                name="companyName"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Company name</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Company name..." {...field} />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+
+                            <FormField
+                                name="companyLocation"
+                                control={form.control}
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Company Location</FormLabel>
+                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                            <FormControl>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Select Location" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                <SelectGroup>
+                                                    <SelectLabel>worldwide</SelectLabel>
+                                                    <SelectItem value="worldwide">
+                                                        <span>🌏</span>
+                                                        <span className="pl-2">Worldwide / Remote</span>
+                                                    </SelectItem>
+                                                </SelectGroup>
+                                                <SelectGroup>
+                                                    <SelectLabel>Location</SelectLabel>
+                                                    {
+                                                        countryList.map((country) => (
+                                                            <SelectItem key={country.code} value={country.name}>
+                                                                <span>{country.flagEmoji}</span>
+                                                                <span>{country.name}</span>
+                                                            </SelectItem>
+                                                        ))
+                                                    }
+                                                </SelectGroup>
+                                            </SelectContent>
+                                        </Select>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+
+                            />
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <FormField
+                                control={form.control}
+                                name="companyWebsite"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Company Website</FormLabel>
+                                        <FormControl>
+                                            {/* <Input placeholder="Company Website..." value={field.value} onChange={field.onChange} /> */}
+                                            {/* below the line is the simplified line of the above line  */}
+                                            <Input placeholder="Company Website..." {...field} />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="companyXAccount"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Company X Website</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Company X Account..." {...field} />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="companyAbout"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Company Descriptio</FormLabel>
+                                        <FormControl>
+                                            <Textarea placeholder="Say something about your company" {...field} className="min-h-[120px]" />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
                     </CardContent>
                 </Card>
 
