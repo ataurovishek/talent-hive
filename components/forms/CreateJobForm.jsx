@@ -142,12 +142,24 @@ export function CreateJobForm() {
                                 <FormItem>
                                     <FormLabel>Job Description</FormLabel>
                                     <FormControl>
-                                        <JobDescriptionEditor />
+                                        <JobDescriptionEditor field={field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
+                            )}
+                        />
 
-
+                        <FormField
+                            control={form.control}
+                            name="benefits"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Benefits</FormLabel>
+                                    <FormControl>
+                                        <p>Benefit selectors</p>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
                             )}
                         />
                     </CardContent>

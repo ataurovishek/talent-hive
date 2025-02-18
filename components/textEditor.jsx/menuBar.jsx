@@ -1,4 +1,4 @@
-import { AlignCenter, AlignLeft, AlignRight, Bold, Heading1, Heading2, Heading3, Italic, ListIcon, ListOrdered, Redo, Strikethrough, Undo } from "lucide-react";
+import { AlignCenter, AlignLeft, AlignRight, Bold, Heading1, Heading2, Heading3, Italic, ListIcon, ListOrdered, Pilcrow, Redo, Strikethrough, Undo } from "lucide-react";
 import { Toggle } from "../ui/toggle";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 import { cn } from "@/lib/utils";
@@ -38,6 +38,15 @@ export function MenuBar({ editor }) {
                         </TooltipTrigger>
                         <TooltipContent>Strike</TooltipContent>
                     </Tooltip>
+                    {/* <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Toggle size="sm" pressed={editor.isActive("paragraph")} onPressedChange={() => editor.chain().focus().setParagraph().run()} className={cn(editor.isActive("paragraph") && "bg-muted text-muted-foreground")}>
+                                <Pilcrow />
+                            </Toggle>
+                        </TooltipTrigger>
+                        <TooltipContent>Paragraph</TooltipContent>
+
+                    </Tooltip> */}
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Toggle size="sm" pressed={editor.isActive("heading", { level: 1 })} onPressedChange={() => editor.chain().focus().toggleHeading({ level: 1 }).run()} className={cn(editor.isActive("heading", { level: 1 }) && "bg-muted text-muted-foreground")}>
@@ -113,7 +122,7 @@ export function MenuBar({ editor }) {
                 <div className="flex flex-wrap gap-1">
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <Button size="sm"  variant="ghost" type="button" onClick={()=>editor.chain().focus().undo().run()} disabled={!editor.can().undo()}>
+                            <Button size="sm" variant="ghost" type="button" onClick={() => editor.chain().focus().undo().run()} disabled={!editor.can().undo()}>
                                 <Undo />
                             </Button>
                         </TooltipTrigger>
@@ -121,7 +130,7 @@ export function MenuBar({ editor }) {
                     </Tooltip>
                     <Tooltip>
                         <TooltipTrigger asChild>
-                            <Button size="sm"  variant="ghost" type="button" onClick={()=>editor.chain().focus().redo().run()} disabled={!editor.can().redo()}>
+                            <Button size="sm" variant="ghost" type="button" onClick={() => editor.chain().focus().redo().run()} disabled={!editor.can().redo()}>
                                 <Redo />
                             </Button>
                         </TooltipTrigger>
