@@ -9,6 +9,7 @@ import { Input } from "../ui/input";
 import { Select, SelectItem, SelectLabel, SelectTrigger, SelectValue, SelectContent, SelectGroup } from "../ui/select";
 import { countryList } from "@/app/utils/countriesList";
 import { SalaryRangeSelector } from "../general/SalaryRangeSelector";
+import { JobDescriptionEditor } from "../textEditor.jsx/jobDescEditor";
 
 
 export function CreateJobForm() {
@@ -129,10 +130,26 @@ export function CreateJobForm() {
                             <FormItem>
                                 <FormLabel>Salary Range</FormLabel>
                                 <FormControl>
-                                    <SalaryRangeSelector control={form.control} minSalary={1} maxSalary={1000000} currency={"USD"} step={2000}/>
+                                    <SalaryRangeSelector control={form.control} minSalary={1} maxSalary={1000000} currency={"USD"} step={2000} />
                                 </FormControl>
                             </FormItem>
                         </div>
+                        <FormField
+
+                            control={form.control}
+                            name="jobDescription"
+                            render={(field) => (
+                                <FormItem>
+                                    <FormLabel>Job Description</FormLabel>
+                                    <FormControl>
+                                        <JobDescriptionEditor />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+
+
+                            )}
+                        />
                     </CardContent>
                 </Card>
 
