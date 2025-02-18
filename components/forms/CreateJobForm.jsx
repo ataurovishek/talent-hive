@@ -10,6 +10,7 @@ import { Select, SelectItem, SelectLabel, SelectTrigger, SelectValue, SelectCont
 import { countryList } from "@/app/utils/countriesList";
 import { SalaryRangeSelector } from "../general/SalaryRangeSelector";
 import { JobDescriptionEditor } from "../textEditor.jsx/jobDescEditor";
+import { BenefitsSelector } from "../general/BenefitsSelector";
 
 
 export function CreateJobForm() {
@@ -138,11 +139,11 @@ export function CreateJobForm() {
 
                             control={form.control}
                             name="jobDescription"
-                            render={(field) => (
+                            render={({field}) => (
                                 <FormItem>
                                     <FormLabel>Job Description</FormLabel>
                                     <FormControl>
-                                        <JobDescriptionEditor field={field} />
+                                        <JobDescriptionEditor field={field}/>
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -156,7 +157,7 @@ export function CreateJobForm() {
                                 <FormItem>
                                     <FormLabel>Benefits</FormLabel>
                                     <FormControl>
-                                        <p>Benefit selectors</p>
+                                        <BenefitsSelector field={field}/>
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

@@ -4,9 +4,7 @@ import { MenuBar } from './menuBar'
 import TextAlign from '@tiptap/extension-text-align'
 import Typography from '@tiptap/extension-typography'
 import Paragraph from '@tiptap/extension-paragraph'
-export function JobDescriptionEditor(field) {
-
-
+export function JobDescriptionEditor({field}) {
 
     const editor = useEditor({
         extensions: [
@@ -22,9 +20,7 @@ export function JobDescriptionEditor(field) {
                 class: 'min-h-[300px] p-4 max-w-none focus:outline-none prose prose-sm sm:prose lg:prose-lg xl:prose-xl dark:prose-invert'
             }
         },
-        onUpdate: ({ editor }) => {
-            field.onChange(JSON.stringify(editor.getJSON()));
-        },
+        onUpdate: ({ editor }) => field.onChange(JSON.stringify(editor.getJSON())),
         content: field.value ? JSON.parse(field.value) : ""
     })
 
