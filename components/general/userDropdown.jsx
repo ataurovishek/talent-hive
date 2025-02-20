@@ -15,6 +15,8 @@ export function UserDropdown({ email, username, image }) {
 
                     <Avatar>
                         <AvatarImage src={image} alt="Profile Image" />
+                        {console.log(image)
+                        }
                         <AvatarFallback>{username.charAt(0)}</AvatarFallback>
                     </Avatar>
 

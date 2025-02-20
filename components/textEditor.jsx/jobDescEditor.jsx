@@ -10,7 +10,6 @@ export function JobDescriptionEditor({field}) {
         extensions: [
             StarterKit,
             Typography,
-            Paragraph,
             TextAlign.configure({ types: ['heading', 'paragraph'] }),
 
         ],

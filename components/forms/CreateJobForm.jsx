@@ -12,21 +12,28 @@ import { SalaryRangeSelector } from "../general/SalaryRangeSelector";
 import { JobDescriptionEditor } from "../textEditor.jsx/jobDescEditor";
 import { BenefitsSelector } from "../general/BenefitsSelector";
 import { Textarea } from "../ui/textarea";
+import { UploadDropzone } from "../general/UploadThingReExported";
+import { XIcon } from "lucide-react";
+import { Button } from "../ui/button";
+import Image from "next/image";
+import { JobListingDuration } from "../general/JobListingDurationSelector";
+import { createJob } from "@/app/action";
+import { useState } from "react";
 
 
-export function CreateJobForm() {
+export function CreateJobForm({ companyAbout, companyLocation, companyLogo, companyName, companyWebsite, companyXAccount }) {
 
     const form = useForm({
         resolver: zodResolver(jobSchema),
         defaultValues: {
             benefits: [],
-            companyName: "",
-            companyAbout: "",
-            companyLocation: "",
-            companyLogo: "",
-            companyWebsite: "",
+            companyName: companyName,
+            companyAbout: companyAbout,
+            companyLocation: companyLocation,
+            companyLogo: companyLogo,
+            companyWebsite: companyWebsite,
             employmentType: "",
-            companyXAccount: "",
+            companyXAccount: companyXAccount || "",
             jobDescription: "",
             jobTitle: "",
             listingDuration: 30,
@@ -36,17 +43,33 @@ export function CreateJobForm() {
         }
     })
 
+    const [pending, setPending] = useState(false)
+
+    async function onSubmit(values) {
+        try {
+            setPending(true)
+            await createJob(values)
+        } catch (error) {
+            if (error instanceof Error && error.message !== "NEXT_REDIRECT") {
+                console.log("something went wrong",error);
+            }
+        } finally {
+            setPending(false)
+        }
+
+    }
+
 
     return (
         <Form {...form}>
-            <form className="col-span-1 lg:col-span-2 flex flex-col gap-8">
+            <form className="col-span-1 lg:col-span-2 flex flex-col gap-8" onSubmit={form.handleSubmit(onSubmit)}>
                 <Card>
                     <CardHeader>
                         <CardTitle>
                             Job Information
                         </CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <FormField
                                 control={form.control}
@@ -93,7 +116,7 @@ export function CreateJobForm() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <FormField
                                 control={form.control}
-                                name="employmentType"
+                                name="location"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Job location</FormLabel>
@@ -134,6 +157,7 @@ export function CreateJobForm() {
                                 <FormControl>
                                     <SalaryRangeSelector control={form.control} minSalary={1} maxSalary={1000000} currency={"USD"} step={2000} />
                                 </FormControl>
+                                <FormMessage />
                             </FormItem>
                         </div>
                         <FormField
@@ -171,7 +195,7 @@ export function CreateJobForm() {
                     <CardHeader>
                         <CardTitle>Company Information</CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <FormField
                                 control={form.control}
@@ -182,6 +206,7 @@ export function CreateJobForm() {
                                         <FormControl>
                                             <Input placeholder="Company name..." {...field} />
                                         </FormControl>
+                                        <FormMessage />
                                     </FormItem>
                                 )}
                             />
@@ -237,6 +262,7 @@ export function CreateJobForm() {
                                             {/* below the line is the simplified line of the above line  */}
                                             <Input placeholder="Company Website..." {...field} />
                                         </FormControl>
+                                        <FormMessage />
                                     </FormItem>
                                 )}
                             />
@@ -252,22 +278,90 @@ export function CreateJobForm() {
                                     </FormItem>
                                 )}
                             />
-                            <FormField
-                                control={form.control}
-                                name="companyAbout"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Company Descriptio</FormLabel>
-                                        <FormControl>
-                                            <Textarea placeholder="Say something about your company" {...field} className="min-h-[120px]" />
-                                        </FormControl>
-                                    </FormItem>
-                                )}
-                            />
                         </div>
+                        <FormField
+                            control={form.control}
+                            name="companyAbout"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Company Descriptions</FormLabel>
+                                    <FormControl>
+                                        <Textarea placeholder="Say something about your company" {...field} className="min-h-[120px]" />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            name="companyLogo"
+                            control={form.control}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Company Logo</FormLabel>
+                                    <FormControl>
+                                        {
+                                            field.value && field.value !== '' ? (
+                                                <div className="relative w-fit">
+                                                    <Image
+                                                        src={field.value}
+                                                        alt="company logo"
+                                                        width={80}
+                                                        height={80}
+
+                                                    />
+                                                    <Button
+
+                                                        className="absolute -top-2 -right-2"
+                                                        type="button"
+                                                        variant="destructive"
+                                                        onClick={() => field.onChange("")}
+                                                    >
+                                                        <XIcon className="size-4" />
+                                                    </Button>
+                                                </div>
+
+                                            ) : (
+                                                <UploadDropzone endpoint="imageUploader"
+                                                    onClientUploadComplete={(res) => field.onChange(res[0].url)}
+                                                    onUploadError={(e) => console.log("something went wrong", e)
+                                                    }
+                                                    className="border-primary cursor-pointer"
+                                                />
+                                            )
+                                        }
+
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+
+                            )}
+                        />
+
                     </CardContent>
                 </Card>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Job Listing Duration</CardTitle>
+                    </CardHeader>
 
+                    <CardContent>
+                        <FormField
+                            control={form.control}
+                            name="listingDuration"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <JobListingDuration field={field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </CardContent>
+                </Card>
+                <Button type="submit" className="w-full" disabled={pending}>
+                    {pending ? "Submitting" : "Create Job Post..."}
+                </Button>
             </form>
         </Form>
     )
