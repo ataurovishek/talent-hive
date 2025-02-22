@@ -14,13 +14,16 @@ datasource db {
 }
 
 model User {
-  id                  String     @id @default(cuid())
-  name                String?
-  email               String     @unique
-  emailVerified       DateTime?
-  image               String?
-  accounts            Account[]
-  sessions            Session[]
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+
+  stripeCustomerId String?
+
   userType            UserType?
   onboardingCompleted Boolean    @default(false)
   Company             Company?
@@ -36,16 +39,16 @@ enum UserType {
 }
 
 model Company {
-  id        String   @id @default(uuid())
-  name      String
-  location  String
-  logo      String
-  about     String
-  website   String
-  xAccount  String?
+  id       String  @id @default(uuid())
+  name     String
+  location String
+  logo     String
+  about    String
+  website  String
+  xAccount String?
 
- JobPost JobPost[]
-  
+  JobPost JobPost[]
+
   user      User     @relation(fields: [userId], references: [id])
   userId    String   @unique
   createdAt DateTime @default(now())
@@ -118,7 +121,7 @@ model JobPost {
   createdAt DateTime      @default(now())
   updatedAT DateTime      @updatedAt
 
-  Company Company @relation(fields: [companyId],references: [id])
+  Company   Company @relation(fields: [companyId], references: [id])
   companyId String
 }
 

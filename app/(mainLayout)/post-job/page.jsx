@@ -67,11 +67,13 @@ async function getCompany(userId) {
 }
 
 
+
 export default async function PostJobPage() {
-
-
+    
+    
     const session = await requireUser()
     const data = await getCompany(session.id)
+
 
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mt-5">

@@ -114,7 +114,14 @@ export async function createJob(data) {
 
     await prisma.jobPost.create({
         data: {
-            ...validateData,
+            jobDescription:validateData.jobDescription,
+            jobTitle:validateData.jobTitle,
+            employmentType:validateData.employmentType,
+            location:validateData.location,
+            salaryFrom:validateData.salaryFrom,
+            salaryTo:validateData.salaryTo,
+            listingDuration:validateData.listingDuration,
+            benefits:validateData.benefits,
             companyId:company.id
         }
 
