@@ -7,6 +7,8 @@ import { prisma } from "./utils/db";
 import { redirect } from "next/navigation";
 import arcjet, { detectBot, shield } from "./utils/arcjet";
 import { request } from "@arcjet/next";
+import { stripe } from "./utils/stripe";
+import { JobListingDurationPricing } from "./utils/JobListingPricing";
 
 const ajt = arcjet.withRule(
     shield({
@@ -104,7 +106,12 @@ export async function createJob(data) {
             userId: user.id
         },
         select: {
-            id: true
+            id: true,
+            user: {
+                select: {
+                    stripeCustomerId: true
+                }
+            }
         }
     })
 
@@ -112,21 +119,72 @@ export async function createJob(data) {
         return redirect("/")
     }
 
+    let stripeCustomerId = company.user.stripeCustomerId;
+
+    if (!stripeCustomerId) {
+        const customer = await stripe.customers.create({
+            email: user.email,
+            name: user.name
+        })
+        stripeCustomerId = customer.id
+
+        // update user with the customer id 
+
+        await prisma.user.update({
+            where: {
+                id: user.id
+            },
+            data: {
+                stripeCustomerId: customer.id
+            }
+
+        })
+    }
+
     await prisma.jobPost.create({
         data: {
-            jobDescription:validateData.jobDescription,
-            jobTitle:validateData.jobTitle,
-            employmentType:validateData.employmentType,
-            location:validateData.location,
-            salaryFrom:validateData.salaryFrom,
-            salaryTo:validateData.salaryTo,
-            listingDuration:validateData.listingDuration,
-            benefits:validateData.benefits,
-            companyId:company.id
+            jobDescription: validateData.jobDescription,
+            jobTitle: validateData.jobTitle,
+            employmentType: validateData.employmentType,
+            location: validateData.location,
+            salaryFrom: validateData.salaryFrom,
+            salaryTo: validateData.salaryTo,
+            listingDuration: validateData.listingDuration,
+            benefits: validateData.benefits,
+            companyId: company.id
         }
 
     })
 
-    return redirect("/")
+    const pricingTier = JobListingDurationPricing.find((tier) => tier.days === validateData.listingDuration);
+
+    if (!pricingTier) {
+        throw new Error("Invalid Listing duration selected")
+    }
+
+
+    const session = await stripe.checkout.sessions.create({
+        customer: stripeCustomerId,
+        line_items: [
+            {
+                price_data: {
+                    product_data: {
+                        name: `Job Posting - ${pricingTier.days} Days`,
+                        description: pricingTier.description,
+                        images: [
+                            "https://l57koogl1n.ufs.sh/f/lF70zFoVCrbxaSHH2hr1jTdRgySFkmGwPK7pNsVctDeZzlU4"
+                        ]
+                    },
+                    currency: 'USD',
+                    unit_amount: pricingTier.price * 100,
+                },
+                quantity: 1
+            }
+        ],     
+        mode: 'payment',
+        success_url: `${process.env.NEXT_PUBLIC_URL}/payment/success`,
+        cancel_url: `${process.env.NEXT_PUBLIC_URL}/payment/cancel`
+    })
+    return redirect(session.url)
 
 }
