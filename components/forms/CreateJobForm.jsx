@@ -360,9 +360,16 @@ export function CreateJobForm({ companyAbout, companyLocation, companyLogo, comp
                     </CardContent>
                 </Card>
                 <Button type="submit" className="w-full" disabled={pending}>
-                    {pending ? "Submitting" : "Create Job Post..."}
+                    {pending ? (
+                        <>
+                            <span className="animate-spin mr-2">⏳</span>
+                            Submitting...
+                        </>
+                    ) : (
+                        "Create Job Post"
+                    )}
                 </Button>
             </form>
         </Form>
-    )
+    )               
 }
