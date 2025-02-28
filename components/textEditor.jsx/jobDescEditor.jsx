@@ -3,7 +3,6 @@ import StarterKit from '@tiptap/starter-kit'
 import { MenuBar } from './menuBar'
 import TextAlign from '@tiptap/extension-text-align'
 import Typography from '@tiptap/extension-typography'
-import Paragraph from '@tiptap/extension-paragraph'
 export function JobDescriptionEditor({field}) {
 
     const editor = useEditor({

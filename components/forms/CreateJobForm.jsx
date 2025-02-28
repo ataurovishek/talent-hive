@@ -22,7 +22,7 @@ import { useState } from "react";
 
 
 export function CreateJobForm({ companyAbout, companyLocation, companyLogo, companyName, companyWebsite, companyXAccount }) {
-
+    
     const form = useForm({
         resolver: zodResolver(jobSchema),
         defaultValues: {
@@ -42,7 +42,7 @@ export function CreateJobForm({ companyAbout, companyLocation, companyLogo, comp
             salaryTo: 0
         }
     })
-
+    
     const [pending, setPending] = useState(false)
 
     async function onSubmit(values) {
@@ -51,7 +51,7 @@ export function CreateJobForm({ companyAbout, companyLocation, companyLogo, comp
             await createJob(values)
         } catch (error) {
             if (error instanceof Error && error.message !== "NEXT_REDIRECT") {
-                console.log("something went wrong",error);
+                console.log("something went wrong", error);
             }
         } finally {
             setPending(false)
@@ -359,17 +359,11 @@ export function CreateJobForm({ companyAbout, companyLocation, companyLogo, comp
                         />
                     </CardContent>
                 </Card>
-                <Button type="submit" className="w-full" disabled={pending}>
-                    {pending ? (
-                        <>
-                            <span className="animate-spin mr-2">⏳</span>
-                            Submitting...
-                        </>
-                    ) : (
-                        "Create Job Post"
-                    )}
+                <Button type="submit" className="w-full" disabled={pending} onClick={()=>console.log('clicked')
+                }>
+                    {pending ?"Submitting" : "Create Job Post"}
                 </Button>
             </form>
         </Form>
-    )               
+    )
 }

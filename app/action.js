@@ -9,6 +9,7 @@ import arcjet, { detectBot, shield } from "./utils/arcjet";
 import { request } from "@arcjet/next";
 import { stripe } from "./utils/stripe";
 import { JobListingDurationPricing } from "./utils/JobListingPricing";
+import { inngest } from "./utils/inngest/client";
 
 const ajt = arcjet.withRule(
     shield({
@@ -141,7 +142,7 @@ export async function createJob(data) {
         })
     }
 
-   const jobPost =  await prisma.jobPost.create({
+    const jobPost = await prisma.jobPost.create({
         data: {
             jobDescription: validateData.jobDescription,
             jobTitle: validateData.jobTitle,
@@ -152,6 +153,9 @@ export async function createJob(data) {
             listingDuration: validateData.listingDuration,
             benefits: validateData.benefits,
             companyId: company.id
+        },
+        select: {
+            id: true
         }
 
     })
@@ -162,6 +166,14 @@ export async function createJob(data) {
         throw new Error("Invalid Listing duration selected")
     }
 
+
+    await inngest.send({
+        name: 'job/created',
+        data: {
+            jobId: jobPost.id,
+            expirationDays: validateData.listingDuration
+        }
+    })
 
     const session = await stripe.checkout.sessions.create({
         customer: stripeCustomerId,
@@ -180,10 +192,10 @@ export async function createJob(data) {
                 },
                 quantity: 1
             }
-        ],   
-        metadata:{
-            jobId:jobPost.id
-        }  ,
+        ],
+        metadata: {
+            jobId: jobPost.id
+        },
         mode: 'payment',
         success_url: `${process.env.NEXT_PUBLIC_URL}/payment/success`,
         cancel_url: `${process.env.NEXT_PUBLIC_URL}/payment/cancel`

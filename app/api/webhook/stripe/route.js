@@ -27,10 +27,12 @@ export async function POST(request) {
     if (event.type === 'checkout.session.completed') {
         const customerId = session.customer;
         const jobId = session.metadata?.jobId
+        console.log(jobId);
 
         if (!jobId) {
             return new NextResponse("No job id found", { status: 400 })
         }
+
         const company = await prisma.user.findUnique({
             where: {
                 stripeCustomerId: customerId
@@ -45,8 +47,9 @@ export async function POST(request) {
         })
 
         if (!company) {
-            return new NextResponse('No company found for user', {status:400})
+            return new NextResponse('No company found for user', { status: 400 })
         }
+
 
         await prisma.jobPost.update({
             where: {
@@ -54,12 +57,11 @@ export async function POST(request) {
                 companyId: company?.Company?.id
             },
             data: {
-                status: 'ACTIVE'
+                status: "ACTIVE"
             }
         })
     }
 
-
-return new NextResponse(null,{status:200})
+    return NextResponse(null, { status: 200 })
 
 }
