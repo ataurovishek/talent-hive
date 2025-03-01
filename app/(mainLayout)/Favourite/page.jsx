@@ -17,7 +17,9 @@ async function getFavourites(userId) {
                     jobTitle: true,
                     salaryFrom: true,
                     salaryTo: true,
-                    employmentType:true,
+                    employmentType: true,
+                    location: true,
+                    createdAt: true,
                     Company: {
                         select: {
                             name: true,
@@ -43,8 +45,8 @@ export default async function FavouritePage() {
 
     return (
         <div className="grid grid-cols-1 mt-5 gap-4">
-            {data.map((favourite)=>(
-                <JobCard key={favourite.JobPost.id} job={favourite.JobPost}/>
+            {data.map((favourite) => (
+                <JobCard key={favourite.JobPost.id} job={favourite.JobPost} />
             ))}
         </div>
     )

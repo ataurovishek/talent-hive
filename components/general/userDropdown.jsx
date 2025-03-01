@@ -6,8 +6,8 @@ import Link from "next/link";
 import { signOut } from "@/app/utils/auth";
 
 export function UserDropdown({ email, username, image }) {
- 
-    
+
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -15,7 +15,7 @@ export function UserDropdown({ email, username, image }) {
 
                     <Avatar>
                         <AvatarImage src={image} alt="Profile Image" />
-                      
+
                         <AvatarFallback>{username.charAt(0)}</AvatarFallback>
                     </Avatar>
 
@@ -34,6 +34,12 @@ export function UserDropdown({ email, username, image }) {
                         <Link href="/Favourite" className="flex justify-start py-2">
                             <Heart size={16} strokeWidth={2} className="opacity-16" />
                             <span className="text-sm">Favourite Jobs</span>
+                        </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                        <Link href="/my-jobs" className="flex justify-start py-2">
+                            <Heart size={16} strokeWidth={2} className="opacity-16" />
+                            <span className="text-sm">My Job Listing</span>
                         </Link>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
