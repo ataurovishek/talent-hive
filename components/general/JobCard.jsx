@@ -20,10 +20,10 @@ export default function JobCard({ job }) {
                                 <p className="text-sm text-muted-foreground">{job.Company.name}</p>
                                 <span className="hidden md:inline text-muted-foreground">*</span>
                                 <Badge variant="secondary" className="rounded-full">
-                                    {job.employmentType}
+                                    {job?.employmentType}
                                 </Badge>
                                 <span className="hidden md:inline text-muted-foreground">*</span>
-                                <Badge className="rounded-full">{job.location}</Badge>
+                                <Badge className="rounded-full">{job.Company.location}</Badge>
                                 <span className="hidden md:inline text-muted-foreground">*</span>
                                 <p >{formatCurrency(job.salaryFrom)} - {" "}{formatCurrency(job.salaryTo)}</p>
                             </div>

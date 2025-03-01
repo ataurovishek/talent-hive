@@ -31,14 +31,8 @@ export function UserDropdown({ email, username, image }) {
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                     <DropdownMenuItem asChild>
-                        <Link href="/favourite" className="flex justify-start py-2">
+                        <Link href="/Favourite" className="flex justify-start py-2">
                             <Heart size={16} strokeWidth={2} className="opacity-16" />
-                            <span className="text-sm">Favourite Jobs</span>
-                        </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                        <Link href="/my-jobs" className="flex justify-start py-2">
-                            <Layers2 size={16} strokeWidth={2} className="opacity-16" />
                             <span className="text-sm">Favourite Jobs</span>
                         </Link>
                     </DropdownMenuItem>

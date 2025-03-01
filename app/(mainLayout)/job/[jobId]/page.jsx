@@ -64,7 +64,7 @@ function getClient(session) {
 async function getJob(jobId, userId) {
 
     const [jobData, savedJob] = await Promise.all([
-        await prisma.jobPost.findUnique({
+      await  prisma.jobPost.findUnique({
             where: {
                 status: "ACTIVE",
                 id: jobId
@@ -88,25 +88,24 @@ async function getJob(jobId, userId) {
             }
         }),
 
-        userId ?
-            prisma.savedJobPost.findUnique({
-                where: {
-                    userId_jobPostId: {
-                        userId: userId,
-                        jobPostId: jobId
-                    }
-                },
-                select: {
-                    id: true
+        userId ? prisma.savedJobPost.findUnique({
+            where: {
+                userId_jobPostId: {
+                    userId: userId,
+                    jobPostId: jobId
                 }
-            }) : null
+            },
+            select: {
+                id: true
+            }
+        }) : null
     ])
 
     if (!jobData) {
         return notFound()
     }
 
-    return jobData;
+    return { jobData, savedJob };
 }
 
 export default async function JobIdPage({ params }) {
@@ -126,7 +125,7 @@ export default async function JobIdPage({ params }) {
     const { jobId } = await params;
 
 
-    const data = await getJob(jobId);
+    const { jobData: data, savedJob } = await getJob( jobId, session?.user.id);
     const LocationFlag = getFlagEmoji(data.location);
 
 
@@ -152,9 +151,9 @@ export default async function JobIdPage({ params }) {
                     </Button> */}
                     {session?.user ? (
                         <form action={
-                            savedJob ? unSavedJobPost() : savedJobPost()
+                            savedJob ? unSavedJobPost.bind(null, savedJob.id) : savedJobPost.bind(null,jobId)
                         }>
-                            <SavedJobButton savedJob={!!session} />
+                            <SavedJobButton savedJob={!!savedJob} />
                         </form>
                     ) : (
                         <Link href={'/login'} className={buttonVariants({ variant: "outline" })}>
