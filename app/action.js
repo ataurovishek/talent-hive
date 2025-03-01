@@ -18,7 +18,7 @@ const ajt = arcjet.withRule(
 ).withRule(
     detectBot({
         mode: "LIVE",
-        allow: [],
+        allow: ["CATEGORY:SEARCH_ENGINE", "CATEGORY:PREVIEW"],
     })
 )
 
@@ -202,4 +202,44 @@ export async function createJob(data) {
     })
     return redirect(session.url)
 
+}
+
+
+export async function savedJobPost(jobId) {
+    const user = await requireUser();
+
+    const req = await request();
+
+    const decision = await ajt.protect(req);
+
+    if (decision.isDenied()) {
+        throw new Error("Forbidden")
+    }
+
+    await prisma.savedJobPost.create({
+        data: {
+            jobPostId: jobId,
+            userId: user.id
+        }
+    })
+}
+
+export async function unSavedJobPost(savedJobPostId) {
+    const user = await requireUser();
+
+    const req = await request();
+
+    const decision = await ajt.protect(req);
+
+    if (decision.isDenied()) {
+        throw new Error("Forbidden")
+    }
+
+    await prisma.savedJobPost.delete({
+        where:{
+            id:savedJobPostId,
+            userId:user.id
+        },
+       
+    })
 }
