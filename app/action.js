@@ -249,3 +249,68 @@ export async function unSavedJobPost(savedJobPostId) {
     })
     revalidatePath(`/job/${data.jobPostId}`)
 }
+
+export async function editJobPost(data, jobId) {
+
+    const user = await requireUser();
+
+    const req = await request();
+
+    const decision = await ajt.protect(req);
+
+    if (decision.isDenied()) {
+        throw new Error("Forbidden")
+    }
+
+    const validateData = jobSchema.parse(data);
+    await prisma.jobPost.update({
+        where: {
+            id: jobId,
+            Company: {
+                select: {
+                    userId: user?.id
+                }
+            }
+        },
+        data: {
+            jobDescription: validateData.jobDescription,
+            jobTitle: validateData.jobTitle,
+            employmentType: validateData.employmentType,
+            location: validateData.location,
+            salaryFrom: validateData.salaryFrom,
+            salaryTo: validateData.salaryTo,
+            benefits: validateData.benefits,
+
+        }
+    })
+    return redirect('/my-jobs')
+}
+
+export async function deleteJobPost(jobId) {
+    const session = await requireUser();
+
+    const req = await request();
+
+    const decision = await ajt.protect(req);
+
+    if (decision.isDenied()) {
+        throw new Error("Forbidden")
+    };
+
+    await prisma.jobPost.delete({
+        where: {
+            id: jobId,
+            Company:{
+                userId: session.id
+            }
+        }
+    }) 
+    
+    await inngest.send({
+        name: 'job/cancel.expiration',
+        data: {
+            jobId: jobId
+        }
+    })
+    return redirect('/my-jobs')
+}

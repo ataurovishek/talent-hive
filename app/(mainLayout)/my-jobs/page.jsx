@@ -1,5 +1,6 @@
 import { prisma } from "@/app/utils/db"
 import { requireUser } from "@/app/utils/requireUser";
+import { CopyLinkMenuItem } from "@/components/general/CopyLink";
 import { EmptyState } from "@/components/general/EmptyState";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -105,14 +106,7 @@ export default async function MyJobPage() {
 
                                                         </Link>
                                                     </DropdownMenuItem>
-                                                    <DropdownMenuItem>
-                                                        <Link href={`/my-jobs/${listing.id}/edit`} className="flex items-center gap-2">
-
-                                                            <CopyCheckIcon />
-                                                            Copy Job URL
-
-                                                        </Link>
-                                                    </DropdownMenuItem>
+                                                    <CopyLinkMenuItem jobUrl={`${process.env.NEXT_PUBLIC_URL}/job/${listing.id}`} />
                                                     <DropdownMenuSeparator />
                                                     <DropdownMenuItem>
                                                         <Link href={`/my-jobs/${listing.id}/delete`} className="flex items-center gap-2">

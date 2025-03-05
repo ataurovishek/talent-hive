@@ -1,4 +1,6 @@
 import { prisma } from "@/app/utils/db"
+import { requireUser } from "@/app/utils/requireUser"
+import { EditJobForm } from "@/components/forms/EditJobForm"
 import { notFound } from "next/navigation"
 
 
@@ -39,8 +41,11 @@ async function getData(jobId, userId) {
     return data
 }
 
-export default function PageEdit() {
+export default async function PageEdit({ params }) {
+    const { jobId } = await params;
+    const user = await requireUser();
+    const data = await getData(jobId, user.id)
     return (
-        <h1>Hello iam from edit</h1>
+        <EditJobForm jobPost={data} />
     )
 }

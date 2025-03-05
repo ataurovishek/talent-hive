@@ -1,7 +1,7 @@
-import { DropdownMenu, DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { ChevronDown, Heart, Layers2, LogOut } from "lucide-react";
-import { DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from "../ui/dropdown-menu";
+// import { } from "@radix-ui/react-dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ChevronDown, Heart, LogOut } from "lucide-react";
+import { DropdownMenuContent, DropdownMenu, DropdownMenuTrigger, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from "../ui/dropdown-menu";
 import Link from "next/link";
 import { signOut } from "@/app/utils/auth";
 

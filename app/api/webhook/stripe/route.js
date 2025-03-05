@@ -57,11 +57,11 @@ export async function POST(request) {
                 companyId: company?.Company?.id
             },
             data: {
-                status: "ACTIVE"
+                status:"ACTIVE"
             }
         })
     }
 
-    return NextResponse(null, { status: 200 })
+    return new NextResponse(null, { status: 200 })
 
 }
