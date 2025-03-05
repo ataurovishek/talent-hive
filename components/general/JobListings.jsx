@@ -2,18 +2,22 @@ import { prisma } from "@/app/utils/db"
 import { EmptyState } from "./EmptyState"
 import JobCard from "./JobCard"
 import MainPagination from "./MainPagination"
+import { JobPostStatus } from "@prisma/client";
 
 
 
-async function getData( page= 1, pageSize = 3 ) {
-    const skip = (page - 1) * pageSize
+async function getData({ page = 1, pageSize = 2, jobTypes = [], location="" }) {
+    const skip = (page - 1) * pageSize;
+    const where = {
+        status: JobPostStatus.ACTIVE,
+        ...(jobTypes.length > 0 && { employmentType: { in: jobTypes } }),
+        ...(location && location !=='worldwide' && { location: location })
+    }
 
     const [data, count] = await Promise.all([
 
-         prisma.jobPost.findMany({
-            where: {
-                status: "ACTIVE"
-            },
+        prisma.jobPost.findMany({
+            where: where,
             take: pageSize,
             skip: skip,
             select: {
@@ -46,14 +50,14 @@ async function getData( page= 1, pageSize = 3 ) {
     ])
 
     return {
-        jobs:data,
-        totalpages:Math.ceil(count/pageSize)
+        jobs: data,
+        totalpages: Math.ceil(count / pageSize)
     }
 }
 
-export default async function JobListings({currentpage}) {
+export default async function JobListings({ currentpage, jobTypes,location }) {
 
-    const {jobs,totalpages} = await getData(currentpage)
+    const { jobs, totalpages } = await getData({ page: currentpage, pageSize: 2, jobTypes: jobTypes,location: location })
 
     return (
         <>

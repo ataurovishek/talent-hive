@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { countryList } from "@/app/utils/countriesList"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useCallback } from "react";
+import { boolean } from "zod";
 
 
 const jobTypes = ["full-time", "part-time", "contract", "internship"]
@@ -18,9 +19,12 @@ const jobTypes = ["full-time", "part-time", "contract", "internship"]
 export default function JobFilter() {
 
     const router = useRouter();
-
+    const searchParams = useSearchParams();
     // get current filter from the url 
-    const currentJobTypes = useSearchParams().get("jobType")?.split(",") || [];
+    const currentJobTypes = searchParams.get("jobType")?.split(",") || [];
+
+    const currentLocation = searchParams.get("location") || "";
+
     function clearAllFilter() {
         router.push("/")
     }
@@ -29,8 +33,11 @@ export default function JobFilter() {
         const params = new URLSearchParams();
         if (value) {
             params.set(name, value);
+        } else {
+            params.delete(name);
         }
-    })
+        return params.toString();
+    }, [searchParams])
 
     function handleJobTypeChange(jobType, checked) {
         const current = new Set(currentJobTypes);
@@ -40,7 +47,12 @@ export default function JobFilter() {
         } else {
             current.delete(jobType);
         }
-        const newValue = Array.from(current).join(",")
+        const newValue = Array.from(current).join(",");
+
+        router.push(`?${createQueryString("jobType", newValue)}`)
+    }
+    function handleLocation(location) {
+        router.push(`?${createQueryString("location", location)}`)
     }
     return (
         <Card className='col-span-1 h-fit'>
@@ -59,7 +71,7 @@ export default function JobFilter() {
                         {
                             jobTypes.map((job, index) => (
                                 <div key={index} className="flex flex-wrap text-wrap items-center space-x-2">
-                                    <Checkbox id={job} checked={currentJobTypes.includes(job)} />
+                                    <Checkbox id={job} onCheckedChange={(checked) => { handleJobTypeChange(job, checked) }} checked={currentJobTypes.includes(job)} />
                                     <Label htmlFor={job}> {job} </Label>
                                 </div>
                             ))
@@ -71,7 +83,7 @@ export default function JobFilter() {
 
                 <div>
                     <Label className="text-lg font-semibold">Location</Label>
-                    <Select>
+                    <Select onValueChange={(location)=>handleLocation(location)} value={currentLocation}>
                         <SelectTrigger>
                             <SelectValue placeholder="Select Location" />
                         </SelectTrigger>
