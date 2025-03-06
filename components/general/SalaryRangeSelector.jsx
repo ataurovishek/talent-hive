@@ -3,7 +3,7 @@ import { Slider } from "../ui/slider";
 import { useState } from "react";
 import { formatCurrency } from "@/app/utils/formatCurrency";
 
-export function SalaryRangeSelector({ control, currency, maxSalary, minSalary, step }) {
+export function SalaryRangeSelector({ control,maxSalary, minSalary, step }) {
 
     const { field: fromField } = useController({
         name: 'salaryFrom',

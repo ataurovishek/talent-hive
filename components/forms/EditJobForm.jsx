@@ -150,7 +150,7 @@ export function EditJobForm({ jobPost }) {
                             <FormItem>
                                 <FormLabel>Salary Range</FormLabel>
                                 <FormControl>
-                                    <SalaryRangeSelector control={form.control} minSalary={1} maxSalary={1000000} currency={"USD"} step={2000} />
+                                    <SalaryRangeSelector control={form.control} minSalary={1} maxSalary={1000000} step={2000} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
