@@ -1,4 +1,4 @@
-
+import { ourFileRouter } from "@/app/api/uploadthing/core";
 import {
     generateUploadButton,
     generateUploadDropzone,
@@ -6,5 +6,5 @@ import {
 
 
 
-export const UploadButton = generateUploadButton();
-export const UploadDropzone = generateUploadDropzone();
+export const UploadButton = generateUploadButton(ourFileRouter);
+export const UploadDropzone = generateUploadDropzone(ourFileRouter);
