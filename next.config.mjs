@@ -15,5 +15,11 @@ const nextConfig = {
         ]
     }
 };
+import path from 'path';
+
+nextConfig.webpack = (config) => {
+  config.resolve.alias['@components'] = path.join(__dirname, 'components');
+  return config;
+};
 
 export default nextConfig;
