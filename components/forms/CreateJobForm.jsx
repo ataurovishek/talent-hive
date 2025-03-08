@@ -12,7 +12,7 @@ import { SalaryRangeSelector } from "../general/SalaryRangeSelector";
 import { JobDescriptionEditor } from "../textEditor.jsx/jobDescEditor";
 import { BenefitsSelector } from "../general/BenefitsSelector";
 import { Textarea } from "../ui/textarea";
-import { UploadDropzone } from "@/components/general/uploadthingsReExported";
+import { UploadDropzone } from '@/components/general/UploadThingReExported';
 import { XIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import Image from "next/image";
